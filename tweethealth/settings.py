@@ -1,5 +1,5 @@
 # Django settings for tweethealth project.
-
+import dj_database_url
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -8,7 +8,8 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-
+DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -19,7 +20,7 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
-
+'''
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -149,3 +150,4 @@ LOGGING = {
         },
     }
 }
+
