@@ -18,14 +18,10 @@ def homepage(request):
     template = 'homepage.html'
 
     # check if website visitor has already given access to their twitter account
-    try:
-        if 'screen_name' in request.session['twitter_info']:
-            context = _twitter_display_context(request)
-            template = 'twitter_homepage.html'
+    if 'twitter_info' in request.session:
+        context = _twitter_display_context(request)
+        template = 'twitter_homepage.html'
 
-    except KeyError:
-        pass
-        
     return render_to_response(
             template,
             context,
