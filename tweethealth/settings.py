@@ -1,5 +1,6 @@
-# Django settings for tweethealth project.
 import dj_database_url
+
+# Django settings for tweethealth project.
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -9,6 +10,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 DATABASES = {'default': dj_database_url.config(default='postgres://gchaturvedi:@localhost:5432/tweethealth')}
+
 '''
 DATABASES = {
     'default': {
@@ -81,6 +83,15 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'nxydvm6ubqyhm!q($y_lf51i$m@fejq^2e4%6+pcagzi+)+3&amp;n'
 
+# Twitter related application keys
+TWITTER_KEY = '14SytTbIMvBM0OJ9mMy4g'
+TWITTER_SECRET = 'JtIjuiXxKK1yhyfHFdPGB3XsGY7PDr4CY5yxp8eoE'
+TWITTER_REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token'
+TWITTER_AUTHORIZE_URL = 'https://api.twitter.com/oauth/authorize'
+TWITTER_ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token'
+TWITTER_CALLBACK_URL = 'http://tweethealth.heroku.com/login-complete/' 
+AUTHORIZE_COMPLETE_URL = '/'
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -116,6 +127,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tweethealth',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -150,4 +162,3 @@ LOGGING = {
         },
     }
 }
-

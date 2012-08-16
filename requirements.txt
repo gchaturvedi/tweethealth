@@ -2,4 +2,7 @@ Django==1.4.1
 distribute==0.6.27
 dj-database-url==0.2.1
 psycopg2==2.4.5
+requests==0.13.6
+simplejson==2.6.1
+twython==2.3.3
 wsgiref==0.1.2
