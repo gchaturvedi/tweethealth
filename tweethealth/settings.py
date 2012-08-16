@@ -1,9 +1,13 @@
 import os.path
+import sys
 import dj_database_url
 
 # Django settings for tweethealth project.
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+# Determine if running on local environment or production
+LOCAL_ENVIRONMENT = True if sys.platform == 'darwin' or sys.platform == 'win32' else False
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),

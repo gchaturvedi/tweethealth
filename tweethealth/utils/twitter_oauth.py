@@ -8,10 +8,15 @@ def connect(request):
     This method begins the three legged oAuth handshake between
     TweetHealth and Twitter.
     """
+    if settings.LOCAL_ENVIRONMENT:
+        twitter_callback = 'http://localhost:8000/login-confirm/'
+    else:
+        twitter_callback = 'http://tweethealth.heroku.com/login-confirm/'
+        
     twitter = Twython(
         twitter_token = settings.TWITTER_KEY,
         twitter_secret = settings.TWITTER_SECRET,
-        callback_url = 'http://localhost:8000/login-confirm/'
+        callback_url = twitter_callback
     )
 
     auth_dict = twitter.get_authentication_tokens()
