@@ -1,1 +1,28 @@
-Hi there {{ twitter_username }}
+{% extends "base.html" %}
+{% block title %}TweetHealth {% endblock %}
+{% block navbar %}
+<ul class="nav">
+  <li class="active">
+    <a href="#">Home</a>
+  </li>
+  <li><a href="#">Trends</a></li>
+  <li><a href="#">About TweetHealth</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+  <h1>Welcome @{{ twitter_username }}</h1>
+  <p>Your score is based on a combination of analyzing your tweets, height and weight.</p>
+<h2>TweetHealth score:</h2>
+  <p>
+	<div style="width:50%; margin-left:auto; margin-right:auto;" align="center">
+		<div class="alert alert-info">
+			You need to hit the gym more!
+		</div>
+	</div>
+	<div style="margin-top:55px;" align="center">
+    <a class="btn btn-primary btn-large">
+		Tweet your TweetHealth rating!
+    </a>
+	</div>
+  </p>
+{% endblock %}

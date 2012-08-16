@@ -1,1 +1,21 @@
-<h1>Hi there</h1>
+{% extends "base.html" %}
+{% block title %}TweetHealth {% endblock %}
+{% block navbar %}
+<ul class="nav">
+  <li class="active">
+    <a href="#">Home</a>
+  </li>
+  <li><a href="#">About TweetHealth</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+  <h1>Welcome to TweetHealth</h1>
+  <p>See how healthy of a lifestyle your living based on your Twitter!  All it takes is logging in via Twitter.</p>
+<div style="margin-top:55px;" align="center">
+  <p>
+    <a href="/login/" class="btn btn-primary btn-large">
+		Login via Twitter now!
+    </a>
+  </p>
+</div>
+{% endblock %}

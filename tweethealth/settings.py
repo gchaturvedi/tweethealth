@@ -1,3 +1,4 @@
+import os.path
 import dj_database_url
 
 # Django settings for tweethealth project.
@@ -48,12 +49,12 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(os.path.dirname(__file__), "media") 
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/' 
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -86,9 +87,6 @@ SECRET_KEY = 'nxydvm6ubqyhm!q($y_lf51i$m@fejq^2e4%6+pcagzi+)+3&amp;n'
 # Twitter related application keys
 TWITTER_KEY = '14SytTbIMvBM0OJ9mMy4g'
 TWITTER_SECRET = 'JtIjuiXxKK1yhyfHFdPGB3XsGY7PDr4CY5yxp8eoE'
-TWITTER_REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token'
-TWITTER_AUTHORIZE_URL = 'https://api.twitter.com/oauth/authorize'
-TWITTER_ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token'
 TWITTER_CALLBACK_URL = 'http://tweethealth.heroku.com/login-complete/' 
 AUTHORIZE_COMPLETE_URL = '/'
 
@@ -128,6 +126,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tweethealth',
+    'tweethealth.utils',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
