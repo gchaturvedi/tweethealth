@@ -84,7 +84,7 @@ def post_tweet(request):
     """
     This function posts a tweet of your TweetHealth to Twitter.  This function
     uses a different Twitter library called twitter since Twython only seems
-    to be working with POST requests.
+    to be working with GET requests.
     """
     try:
         t = twit.Twitter(
