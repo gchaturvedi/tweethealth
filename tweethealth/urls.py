@@ -13,8 +13,9 @@ urlpatterns = patterns('',
     # serve static media content
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 
-    # View that handles what to display on homepage
+    # View that handles what to display on home and about page.
     (r'^$', views.homepage),
+    url(r'^about/?$', views.about),
 
     # Twitter authentication URLs
     url(r'^login/?$', twitter_oauth.connect),

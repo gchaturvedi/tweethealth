@@ -13,19 +13,19 @@
 				data: { 'csrfmiddlewaretoken': '{{csrf_token}}'},
 		        success:  function(data) {
 					if(data['twitter_error']) {
-						$('#tweet-score').hide();
-						$('#latest-tweet').hide();
-						$('#waiting-block').hide();
-						$('#twitter-block').show();
-						$('#tweet-button').hide();
-						$('#twitter-block').text('Unable to fetch Twitter data.  Please try again later.');
+						$('.tweet-score-container').hide();
+						$('.latest-tweet').hide();
+						$('.waiting-block').hide();
+						$('.twitter-block').show();
+						$('.tweet-button-container').hide();
+						$('.twitter-block').text('Unable to fetch Twitter data.  Please try again later.');
 					}
 					else {
-						$('#tweet-score').text(data['health_rating']);
-						$('#health-msg').text(data['health_msg']);
-						$('#latest-tweet').text(data['latest_tweet']);
-						$('#waiting-block').hide();
-						$('#twitter-block').show();
+						$('.tweet-score').text(data['health_rating']);
+						$('.health-msg').text(data['health_msg']);
+						$('.latest-tweet').text(data['latest_tweet']);
+						$('.waiting-block').hide();
+						$('.twitter-block').show();
 					}
 		        },
 		        error: function(data) {
@@ -39,33 +39,32 @@
 {% block navbar %}
 <ul class="nav">
   <li class="active">
-    <a href="#">Home</a>
+    <a href="/">Home</a>
   </li>
-  <li><a href="#">About TweetHealth</a></li>
+  <li><a href="/about/">About TweetHealth</a></li>
 </ul>
 {% endblock %}
 {% block content %}
   <h1>Welcome @{{ twitter_username }}</h1>
   <p>Your score is based on a combination of analyzing your tweets and followers.</p>
-	<div id="waiting-block" style="width:60%; margin-left:auto; margin-right:auto; margin-top:30px;" align="center">
-	<img src="/media/img/spinner_waiting.gif" style="padding:20px;">
+	<div class="waiting-block" align="center">
+	<img class="spinner" src="/media/img/spinner_waiting.gif">
 	<p> Loading Twitter Content..</p>
 	</div>
-	<div id="twitter-block" style="width:70%; margin-left:auto; margin-right:auto; margin-top:30px;" align="center">
-		<div style="float:left;">
-			<h3 style="">TweetHealth score</h3>
-			<div style="width:150px;" align="center" class="alert alert-info">
-				<p id="tweet-score">...</p>
+	<div class="twitter-block" align="center">
+		<div class="tweet-score-container">
+			<h3>TweetHealth score</h3>
+			<div align="center" class="alert alert-info tweet-score-box">
+				<p class="tweet-score">...</p>
 			</div>
 		</div>
-		<div style="float:right;">
+		<div class="meaning-block">
 		<h3 style="">What is the meaning of this?</h3>
-		<p id="health-msg">...</p>		
+		<p class="health-msg">...</p>		
 		</div>
 	</div>
-	
-	<div id="tweet-button" style="margin-top:20%;" align="center">
-	<p id="latest-tweet"></p>
+	<div class="tweet-button-container" align="center">
+	<p class="latest-tweet"></p>
     <a style="margin-top:20px;" class="btn btn-primary btn-large">
 		Tweet your TweetHealth rating!
     </a>

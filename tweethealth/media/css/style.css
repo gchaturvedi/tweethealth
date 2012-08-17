@@ -1,0 +1,40 @@
+p.content {
+    margin-top:50px;
+}
+
+img.spinner {
+    padding:20px;
+}
+
+div .content-block {
+    margin-top:55px;
+}
+
+div .waiting-block {
+    width:60%; 
+    margin-left:auto; 
+    margin-right:auto; 
+    margin-top:30px;" 
+}
+
+div .twitter-block {
+    width:70%; 
+    margin-left:auto; 
+    margin-right:auto; 
+    margin-top:30px;
+}
+
+div .tweet-score-box {
+    width:150px;
+}
+
+div .tweet-score-container {
+    float: left;
+}
+
+div .tweet-button-container {
+    margin-top:20%;
+}
+div .meaning-block {
+    float:right;
+}

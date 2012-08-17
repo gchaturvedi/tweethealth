@@ -29,6 +29,15 @@ def homepage(request):
             context,
             context_instance=RequestContext(request))
 
+def about(request):
+    """
+    This method is reponsible for displaying the about page for
+    TweetHealth.
+    """
+    return render_to_response(
+            'about.html',
+            context_instance=RequestContext(request))
+
 def update_health_rating(request):
     """
     This is a view function that is a callback from a POST request
@@ -43,11 +52,11 @@ def update_health_rating(request):
         elif health_rating > 0 and health_rating <= 50:
             health_msg = 'Meh...you could do better..hit the gym buddy.'
         elif health_rating > 50 and health_rating <= 80:
-            health_msg = 'Good for you...you work out and eat well.'
+            health_msg = 'You\'re okay, but not super healthy.'
         else:
-            health_msg = 'Congratulations..you\'re like super fit..'
+            health_msg = 'Good for you...you work out and eat well.'
             
-        # twitter_error indicates an API error or Rate Limit being hit
+        # twitter_error indicates an API error / Rate Limit being hit
         json_return_val = { 'health_rating' : health_rating, 
                             'health_msg' : health_msg,
                             'latest_tweet' : latest_tweet,
