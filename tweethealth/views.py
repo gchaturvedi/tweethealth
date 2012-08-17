@@ -19,7 +19,7 @@ def homepage(request):
     # set the default context dictionary and template to be displayed
     context = { }
     template = 'homepage.html'
-
+    
     # check if website visitor has already given access to their twitter account
     if 'twitter_info' in request.session:
         context = _twitter_display_context(request)

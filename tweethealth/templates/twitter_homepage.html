@@ -4,8 +4,6 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#twitter-block').hide();
-		update_timeline();
-		function update_timeline() { 			
 	        $.ajax({
 		        type: "POST",
 		        url: '/twitter/update-timeline/',
@@ -29,7 +27,6 @@
 
 		        }	
 			});
-		}		
 	});
 </script>
 {% endblock %}
@@ -61,7 +58,7 @@
 		<p id="latest-tweet">...</p>		
 		</div>
 	</div>
-	<div id="tweet-button" style="margin-top:10%;" align="center">
+	<div style="margin-top:20%;" align="center">
 		<p>Your score indicates unhealthy habits! Hit the gym buddy!</p>
     <a style="margin-top:20px;" class="btn btn-primary btn-large">
 		Tweet your TweetHealth rating!
