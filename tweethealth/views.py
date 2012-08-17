@@ -93,7 +93,7 @@ def post_tweet(request):
     # KeyError here indicates health rating was not saved properly into the session
     except KeyError:
         return HttpResponseRedirect(settings.AUTHORIZE_COMPLETE_URL)
-    # TwythonError indicates an error interacting with Twitter's API
+    # TwitterHTTPError indicates an error interacting with Twitter's API
     except twit.TwitterHTTPError as e:
         json_return_val = { 'tweet_error': 1,
                             'latest_tweet': 'Error posting tweet' }
