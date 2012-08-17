@@ -3,6 +3,7 @@ import re
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.template.loader import render_to_string
 from django.template import RequestContext
 from django.conf import settings
 
@@ -47,6 +48,8 @@ def update_health_rating(request):
     This function is a callback from a POST request
     sent from the user's browser.  This will be triggered periodically.
     """
+    context = { }
+    
     try:
         health_rating, latest_tweet = _get_twitter_data(request)
         
@@ -62,12 +65,20 @@ def update_health_rating(request):
             health_msg = 'You\'re okay, but not super healthy.'
         else:
             health_msg = 'Good for you...you work out and eat well.'
-            
-        # twitter_error indicates an API error / Rate Limit being hit
-        json_return_val = { 'health_rating' : health_rating, 
-                            'health_msg' : health_msg,
-                            'latest_tweet' : latest_tweet,
-                            'twitter_error': 0 }                            
+        
+        context.update({'health_rating' : health_rating,
+                        'health_msg' : health_msg,
+                        'latest_tweet' : latest_tweet})
+        
+        html_string = render_to_string(
+                                  'twitter_health_info.html',
+                                  context,
+                                  context_instance=RequestContext(request))
+
+        json_return_val = { 'html_string' : html_string,
+                            'twitter_error': 0 }     
+                                
+    # catch various Twitter API errors, (401 is auth error, 403 is rate limit error)
     except TwythonError as e:
         if e.error_code == 401:
             json_return_val = { 'twitter_error': 1,
@@ -166,6 +177,7 @@ def _determine_health_rating(user_timeline=None):
     health_meter = 75
     
     if not user_timeline:
+        # set to zero, this person does not really use twitter cannot give average score of 75
         health_meter = 0
     else:
         # list comprehensions to determine healthy and unhealthy points
@@ -175,7 +187,7 @@ def _determine_health_rating(user_timeline=None):
         # Alter score based on points calculated
         health_meter += healthy_points*10
         health_meter -= unhealthy_points*10
-    
+        
     # if somehow score gets below 0 or above 100, set it to 10 or 100
     if health_meter < 0:
         health_meter = 10

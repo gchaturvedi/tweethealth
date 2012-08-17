@@ -3,74 +3,9 @@
 {{ block.super }}
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#twitter-block').hide();
-		twitterUpdate();
-		window.setInterval(twitterUpdate, 600000);
-		function twitterUpdate() { 
-	        $.ajax({
-		        type: "POST",
-		        url: '/twitter/update-timeline/',
-				data: { 'csrfmiddlewaretoken': '{{csrf_token}}'},
-		        success:  function(data) {
-					if(data['twitter_error']) {
-						$('.tweet-score-container').hide();
-						$('.latest-tweet').hide();
-						$('.waiting-block').hide();
-						$('.twitter-block').show();
-						$('.tweet-button-container').hide();
-						
-						if(data['rate_error']) {
-							$('.twitter-block').text('You have hit the Twitter API rate limit.');
-						}
-						else if (data['auth_error']) {
-							$('.twitter-block').html('You do not have the proper authentication with Twitter or have revoked access to the TweetHealth app.  Please <a href="/login/">relogin here</a>.');
-						}
-						else {
-							$('.twitter-block').text('Unable to fetch Twitter data.  Please try again later.');
-						}
-					}
-					else {
-						$('.tweet-score').text(data['health_rating']);
-						$('.health-msg').text(data['health_msg']);
-						if(data['latest_tweet'] == '') {
-							$('.latest-tweet').text('You have no tweets!');
-						}
-						else {
-							$('.latest-tweet').text(data['latest_tweet']);
-						}
-						$('.waiting-block').hide();
-						$('.twitter-block').show();						
-					}
-		        },
-		        error: function(data) {
-					// Insert error processing here if necessary
-		        }	
-			});		
-		}		
+		twitterUpdate('{{csrf_token}}');
+		window.setInterval(twitterUpdate('{{csrf_token}}'), 600000);
 	});
-
-	function postTweet() { 
-        $.ajax({
-	        type: "POST",
-	        url: '/twitter/post-tweet/',
-			data: { 'csrfmiddlewaretoken': '{{csrf_token}}'},
-	        success:  function(data) {
-				$('.latest-tweet').text(data['latest_tweet']);
-				
-				if(data['twitter_error']) {
-					$('.latest-tweet-label').hide();
-				}
-				else {
-					$('.latest-tweet-label').text('Tweet posted!');
-					$('.latest-tweet').text(data['latest_tweet']);
-				}
-	        },
-	        error: function(data) {
-				// Insert error processing here if necessary
-	        }	
-		});		
-	}
-
 </script>
 {% endblock %}
 {% block navbar %}
@@ -88,24 +23,7 @@
 	<img class="spinner" src="/media/img/spinner_waiting.gif">
 	<p> Loading Twitter Content..</p>
 	</div>
-	<div class="twitter-block" align="center">
-		<div class="tweet-score-container">
-			<h3>TweetHealth score</h3>
-			<div align="center" class="alert alert-info tweet-score-box">
-				<p class="tweet-score">...</p>
-			</div>
-		</div>
-		<div class="meaning-block">
-		<h3 style="">What is the meaning of this?</h3>
-		<p class="health-msg">...</p>		
-		</div>
-	</div>
-	<div class="tweet-button-container" align="center">
-	<span class="latest-tweet-label">Latest tweet:</span>
-	<p class="latest-tweet"></p>
-    <a href="javascript:void(0);" onclick="postTweet();" style="margin-top:20px;" class="btn btn-primary btn-large">
-		Tweet your TweetHealth rating!
-    </a>
+	<div class="twitter-block" align="center" >
 	</div>
 </div>
 {% endblock %}

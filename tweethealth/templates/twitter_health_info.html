@@ -1,0 +1,23 @@
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/media/css/style.css">
+<link rel="stylesheet" type="text/css" href="/media/css/bootstrap.css">
+{% endblock %}
+<div class="tweet-score-container">
+		<div class="alert alert-info tweet-score-box">
+			<h3>Health Score:</h3><p class="tweet-score">{{health_rating}}</p>
+		</div>
+	<div class="meaning-block">
+	<h3>What is the meaning of this?</h3>
+	<p class="health-msg">{{health_msg}}</p>		
+	</div>
+</div>
+<div class="tweet-button-container" align="center">
+<div class="latest-tweet-label">Latest tweet:
+<p class="latest-tweet">{% if latest_tweet %}{{latest_tweet}}{%else %}You have no tweets!{% endif %}</p>
+</div>
+<div>
+<a href="javascript:void(0);" onclick="postTweet('{{csrf_token}}');" style="margin-top:20px;" class="btn btn-primary btn-large">
+	Tweet your TweetHealth rating!
+</a>
+</div>
+</div>

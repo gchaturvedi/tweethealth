@@ -2,12 +2,20 @@ p.content {
     margin-top:50px;
 }
 
+h3.score-label {
+    float:left;
+    margin-left:200px;
+}
+
 img.spinner {
     padding:20px;
 }
 
 div .content-block {
     margin-top:55px;
+}
+
+div .latest-tweet-label {
 }
 
 div .waiting-block {
@@ -18,23 +26,27 @@ div .waiting-block {
 }
 
 div .twitter-block {
-    width:70%; 
+    width:100%; 
     margin-left:auto; 
     margin-right:auto; 
     margin-top:30px;
+    height:40%;
 }
 
 div .tweet-score-box {
-    width:150px;
+    width:250px;
+    float:left;
+    margin-left:50px;
 }
 
 div .tweet-score-container {
-    float: left;
+    height:90px;
 }
 
 div .tweet-button-container {
-    margin-top:20%;
+    margin-top:30px;
 }
+
 div .meaning-block {
     float:right;
 }
