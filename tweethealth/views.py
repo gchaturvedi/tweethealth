@@ -1,18 +1,22 @@
 import json
+import re
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.conf import settings
 
-from twython import Twython, TwythonError, TwythonRateLimitError
+from twython import Twython, TwythonError
+import twitter as twit
 
 # Constants
+HEALTHY_WORDS = ['gym','salad','walking','marathon','running','fitness']
+UNHEALTHY_WORDS = ['pizza','restaurant','dessert','beer','alcohol']
 
 # Public Methods
 def homepage(request):
     """
-    This method is reponsible for displaying the homepage for
+    This function is reponsible for displaying the homepage for
     TweetHealth.
     """
     # set the default context dictionary and template to be displayed
@@ -31,7 +35,7 @@ def homepage(request):
 
 def about(request):
     """
-    This method is reponsible for displaying the about page for
+    This function is reponsible for displaying the about page for
     TweetHealth.
     """
     return render_to_response(
@@ -40,11 +44,14 @@ def about(request):
 
 def update_health_rating(request):
     """
-    This is a view function that is a callback from a POST request
+    This function is a callback from a POST request
     sent from the user's browser.  This will be triggered periodically.
     """
     try:
         health_rating, latest_tweet = _get_twitter_data(request)
+        
+        # save new health rating into the user's session for later use
+        request.session['health_rating'] = health_rating
         
         # determine string to display based on health
         if health_rating == 0:
@@ -60,12 +67,42 @@ def update_health_rating(request):
         json_return_val = { 'health_rating' : health_rating, 
                             'health_msg' : health_msg,
                             'latest_tweet' : latest_tweet,
-                            'twitter_error': 0 } 
-    except TwythonError:
-        json_return_val = { 'twitter_error': 1 }
-            
+                            'twitter_error': 0 }                            
+    except TwythonError as e:
+        if e.error_code == 401:
+            json_return_val = { 'twitter_error': 1,
+                                'auth_error': 1 }
+        elif e.error_code == 403:
+            json_return_val = { 'twitter_error': 1,
+                                'rate_error': 1 }
+        else:
+            json_return_val = { 'twitter_error': 1 }
+        
     return HttpResponse(json.dumps(json_return_val), mimetype="application/json")
-    
+
+def post_tweet(request):
+    try:
+        t = twit.Twitter(
+            auth=twit.OAuth(request.session['twitter_info']['oauth_token'],
+            request.session['twitter_info']['oauth_token_secret'],
+            settings.TWITTER_KEY,settings.TWITTER_SECRET)
+        )
+        tweet_msg = 'My TweetHealth score is ' + str(request.session['health_rating'])
+        t.statuses.update(status=tweet_msg)
+        
+    # KeyError here indicates health rating was not saved properly into the session
+    except KeyError:
+        return HttpResponseRedirect(settings.AUTHORIZE_COMPLETE_URL)
+    # TwythonError indicates an error interacting with Twitter's API
+    except twit.TwitterHTTPError as e:
+        json_return_val = { 'tweet_error': 1,
+                            'latest_tweet': 'Error posting tweet' }
+        
+    json_return_val = { 'latest_tweet' : tweet_msg,
+                        'tweet_error' : 0 }
+
+    return HttpResponse(json.dumps(json_return_val), mimetype="application/json")
+
 # Private Methods
 def _twitter_display_context(request):
     """
@@ -78,6 +115,7 @@ def _twitter_display_context(request):
     try:
         context.update({'twitter_username' : request.session['twitter_info']['screen_name']})
     
+    # KeyError(s) here indicate the user clicking cancel instead of signing in
     except KeyError:
         return HttpResponseRedirect(settings.AUTHORIZE_COMPLETE_URL)
                     
@@ -101,29 +139,42 @@ def _get_twitter_data(request):
         return HttpResponseRedirect(settings.AUTHORIZE_COMPLETE_URL)
     
     user_timeline = twitter.getUserTimeline()
-    
+
     if user_timeline:
-        latest_tweet = user_timeline[0]
+        latest_tweet = user_timeline[0]['text']
     else:
         latest_tweet = ''
-    
+
     # Determine the health rating
     new_health_rating = _determine_health_rating(
-        user_timeline=user_timeline,
-        home_timeline=twitter.getHomeTimeline()
+        user_timeline=user_timeline
     )
     
-    # from IPython import embed; embed()
-
     return new_health_rating, latest_tweet
     
-def _determine_health_rating(user_timeline=None, home_timeline=None):
+def _determine_health_rating(user_timeline=None):
     """
     This function specifically deals with assessing a person's health
     rating based on their twitter data and returning this value.
-    """
-    if user_timeline is None and home_timeline is None:
-        return 5
+    """    
+    # start at a 75 (an average ealth score)
+    health_meter = 75
+    
+    if not user_timeline:
+        health_meter = 0
     else:
-        return 0
+        # list comprehensions to determine healthy and unhealthy points
+        healthy_points = len([(tweet,word) for tweet in user_timeline for word in HEALTHY_WORDS if word in tweet['text']])
+        unhealthy_points = len([(tweet,word) for tweet in user_timeline for word in UNHEALTHY_WORDS if word in tweet['text']])
+    
+        # Alter score based on points calculated
+        health_meter += healthy_points*10
+        health_meter -= unhealthy_points*10
+    
+    # if somehow score gets below 0 or above 100, set it to 10 or 100
+    if health_meter < 0:
+        health_meter = 10
+    elif health_meter > 100:
+        health_meter = 100
         
+    return health_meter

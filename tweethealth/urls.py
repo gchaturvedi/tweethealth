@@ -23,4 +23,5 @@ urlpatterns = patterns('',
     
     # Twitter REST API URLs
     url(r'^twitter/update-timeline/?$', views.update_health_rating),
+    url(r'^twitter/post-tweet/?$', views.post_tweet),
 )

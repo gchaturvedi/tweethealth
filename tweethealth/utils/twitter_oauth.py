@@ -5,7 +5,7 @@ from twython import Twython
 
 def connect(request):
     """
-    This method begins the three legged oAuth handshake between
+    This function begins the three legged oAuth handshake between
     TweetHealth and Twitter.
     """
     if settings.LOCAL_ENVIRONMENT:
@@ -27,7 +27,7 @@ def connect(request):
 
 def authorized(request, redirect_url=settings.AUTHORIZE_COMPLETE_URL):
     """
-    This method is a callback from Twitter which is triggered after
+    This function is a callback from Twitter which is triggered after
     the user signs in and allows authorization of their Twitter account.
     """        
     twitter = Twython(
