@@ -57,7 +57,7 @@ def _twitter_display_context(request):
         )
     
     except KeyError:
-        HttpResponseRedirect(AUTHORIZE_COMPLETE_URL)
+        HttpResponseRedirect(settings.AUTHORIZE_COMPLETE_URL)
     
     context.update({'twitter_username' : request.session['twitter_info']['screen_name']})
                 
@@ -73,7 +73,7 @@ def _get_twitter_data(request):
         )
     
     except KeyError:
-        return HttpResponseRedirect(AUTHORIZE_COMPLETE_URL)
+        return HttpResponseRedirect(settings.AUTHORIZE_COMPLETE_URL)
         
     user_timeline = twitter.getUserTimeline()
     
