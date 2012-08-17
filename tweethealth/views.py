@@ -55,12 +55,12 @@ def _twitter_display_context(request):
             oauth_token = request.session['twitter_info']['oauth_token'],
             oauth_token_secret = request.session['twitter_info']['oauth_token_secret'],
         )
+        
+        context.update({'twitter_username' : request.session['twitter_info']['screen_name']})
     
     except KeyError:
-        HttpResponseRedirect(settings.AUTHORIZE_COMPLETE_URL)
-    
-    context.update({'twitter_username' : request.session['twitter_info']['screen_name']})
-                
+        return HttpResponseRedirect(settings.AUTHORIZE_COMPLETE_URL)
+                    
     return context
 
 def _get_twitter_data(request):
