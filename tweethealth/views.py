@@ -81,6 +81,11 @@ def update_health_rating(request):
     return HttpResponse(json.dumps(json_return_val), mimetype="application/json")
 
 def post_tweet(request):
+    """
+    This function posts a tweet of your TweetHealth to Twitter.  This function
+    uses a different Twitter library called twitter since Twython only seems
+    to be working with POST requests.
+    """
     try:
         t = twit.Twitter(
             auth=twit.OAuth(request.session['twitter_info']['oauth_token'],
