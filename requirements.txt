@@ -8,3 +8,4 @@ requests==0.13.6
 simplejson==2.6.1
 twython==2.3.3
 wsgiref==0.1.2
+gunicorn==0.14.6

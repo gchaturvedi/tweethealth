@@ -1,5 +1,38 @@
 {% extends "base.html" %}
-{% block title %}TweetHealth {% endblock %}
+{% block js %}
+{{ block.super }}
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#twitter-block').hide();
+		update_timeline();
+		function update_timeline() { 			
+	        $.ajax({
+		        type: "POST",
+		        url: '/twitter/update-timeline/',
+		        success:  function(data) {
+					if(data['twitter_error']) {
+						$('#tweet-score').hide();
+						$('#latest-tweet').hide();
+						$('#waiting-block').hide();
+						$('#twitter-block').show();
+						$('#tweet-button').hide();
+						$('#twitter-block').text('Unable to fetch Twitter data.  Please try again later.');
+					}
+					else {
+						$('#tweet-score').text(data['health_rating']);
+						$('#latest-tweet').text(data['latest_tweet']);
+						$('#waiting-block').hide();
+						$('#twitter-block').show();
+					}
+		        },
+		        error: function(data) {
+
+		        }	
+			});
+		}		
+	});
+</script>
+{% endblock %}
 {% block navbar %}
 <ul class="nav">
   <li class="active">
@@ -11,18 +44,28 @@
 {% endblock %}
 {% block content %}
   <h1>Welcome @{{ twitter_username }}</h1>
-  <p>Your score is based on a combination of analyzing your tweets, height and weight.</p>
-<h2>TweetHealth score:</h2>
-  <p>
-	<div style="width:50%; margin-left:auto; margin-right:auto;" align="center">
-		<div class="alert alert-info">
-			You need to hit the gym more!
+  <p>Your score is based on a combination of analyzing your tweets and followers.</p>
+	<div id="waiting-block" style="width:60%; margin-left:auto; margin-right:auto; margin-top:30px;" align="center">
+	<img src="/media/img/spinner_waiting.gif" style="padding:20px;">
+	<p> Loading Twitter Content..</p>
+	</div>
+	<div id="twitter-block" style="width:60%; margin-left:auto; margin-right:auto; margin-top:30px;" align="center">
+		<div style="float:left;">
+			<h3 style="">TweetHealth score</h3>
+			<div style="width:150px;" align="center" class="alert alert-info">
+				<p id="tweet-score">...</p>
+			</div>
+		</div>
+		<div style="float:right;">
+		<h3 style="">Twitter Statistics</h3>
+		<p id="latest-tweet">...</p>		
 		</div>
 	</div>
-	<div style="margin-top:55px;" align="center">
-    <a class="btn btn-primary btn-large">
+	<div id="tweet-button" style="margin-top:10%;" align="center">
+		<p>Your score indicates unhealthy habits! Hit the gym buddy!</p>
+    <a style="margin-top:20px;" class="btn btn-primary btn-large">
 		Tweet your TweetHealth rating!
     </a>
 	</div>
-  </p>
+</div>
 {% endblock %}

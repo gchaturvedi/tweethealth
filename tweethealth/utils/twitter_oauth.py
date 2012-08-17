@@ -26,9 +26,9 @@ def connect(request):
 
 def authorized(request, redirect_url=settings.AUTHORIZE_COMPLETE_URL):
     """
-    This method is a callback fr om Twitter which is triggered after
+    This method is a callback from Twitter which is triggered after
     the user signs in and allows authorization of their Twitter account.
-    """
+    """    
     twitter = Twython(
         twitter_token = settings.TWITTER_KEY,
         twitter_secret = settings.TWITTER_SECRET,

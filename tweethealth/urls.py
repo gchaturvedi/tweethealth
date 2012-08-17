@@ -16,7 +16,10 @@ urlpatterns = patterns('',
     # View that handles what to display on homepage
     (r'^$', views.homepage),
 
-    # Twitter related URLs
+    # Twitter authentication URLs
     url(r'^login/?$', twitter_oauth.connect),
     url(r'^login-confirm/?$', twitter_oauth.authorized),
+    
+    # Twitter REST API URLs
+    url(r'^twitter/update-timeline/?$', views.update_health_rating),
 )
