@@ -4,6 +4,9 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#twitter-block').hide();
+		twitterUpdate();
+		window.setInterval(twitterUpdate, 15000);
+		function twitterUpdate() { 
 	        $.ajax({
 		        type: "POST",
 		        url: '/twitter/update-timeline/',
@@ -27,7 +30,8 @@
 		        error: function(data) {
 
 		        }	
-			});
+			});		
+		}
 	});
 </script>
 {% endblock %}

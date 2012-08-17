@@ -28,16 +28,18 @@ def authorized(request, redirect_url=settings.AUTHORIZE_COMPLETE_URL):
     """
     This method is a callback from Twitter which is triggered after
     the user signs in and allows authorization of their Twitter account.
-    """    
+    """        
     twitter = Twython(
         twitter_token = settings.TWITTER_KEY,
         twitter_secret = settings.TWITTER_SECRET,
         oauth_token = request.session['request_token']['oauth_token'],
         oauth_token_secret = request.session['request_token']['oauth_token_secret'],
     )
-
+    
     # Get the access token to complete the three legged oAuth handshake
     twitter_info = twitter.get_authorized_tokens()
-    request.session['twitter_info'] = twitter_info
+    
+    if 'oauth_token_secret' in twitter_info and 'user_id' in twitter_info:
+        request.session['twitter_info'] = twitter_info
     
     return HttpResponseRedirect(redirect_url)
