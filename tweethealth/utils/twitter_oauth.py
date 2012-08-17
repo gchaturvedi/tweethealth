@@ -18,7 +18,8 @@ def connect(request):
         twitter_secret = settings.TWITTER_SECRET,
         callback_url = twitter_callback
     )
-
+    
+    # get the initial round of the three legged oauth tokens
     auth_dict = twitter.get_authentication_tokens()
 
     request.session['request_token'] = auth_dict
@@ -36,9 +37,11 @@ def authorized(request, redirect_url=settings.AUTHORIZE_COMPLETE_URL):
         oauth_token_secret = request.session['request_token']['oauth_token_secret'],
     )
     
-    # Get the access token to complete the three legged oAuth handshake
+    # Get the access token to complete the three legged oauth handshake
     twitter_info = twitter.get_authorized_tokens()
     
+    # only store twitter info in the session if its valid otherwise the user
+    # hit cancel and didn't actually sign in
     if 'oauth_token_secret' in twitter_info and 'user_id' in twitter_info:
         request.session['twitter_info'] = twitter_info
     

@@ -5,7 +5,7 @@
 	$(document).ready(function() {
 		$('#twitter-block').hide();
 		twitterUpdate();
-		window.setInterval(twitterUpdate, 15000);
+		window.setInterval(twitterUpdate, 600000);
 		function twitterUpdate() { 
 	        $.ajax({
 		        type: "POST",
@@ -22,13 +22,14 @@
 					}
 					else {
 						$('#tweet-score').text(data['health_rating']);
+						$('#health-msg').text(data['health_msg']);
 						$('#latest-tweet').text(data['latest_tweet']);
 						$('#waiting-block').hide();
 						$('#twitter-block').show();
 					}
 		        },
 		        error: function(data) {
-
+					// Insert error processing here if necessary
 		        }	
 			});		
 		}
@@ -40,7 +41,6 @@
   <li class="active">
     <a href="#">Home</a>
   </li>
-  <li><a href="#">Trends</a></li>
   <li><a href="#">About TweetHealth</a></li>
 </ul>
 {% endblock %}
@@ -51,7 +51,7 @@
 	<img src="/media/img/spinner_waiting.gif" style="padding:20px;">
 	<p> Loading Twitter Content..</p>
 	</div>
-	<div id="twitter-block" style="width:60%; margin-left:auto; margin-right:auto; margin-top:30px;" align="center">
+	<div id="twitter-block" style="width:70%; margin-left:auto; margin-right:auto; margin-top:30px;" align="center">
 		<div style="float:left;">
 			<h3 style="">TweetHealth score</h3>
 			<div style="width:150px;" align="center" class="alert alert-info">
@@ -59,12 +59,13 @@
 			</div>
 		</div>
 		<div style="float:right;">
-		<h3 style="">Twitter Statistics</h3>
-		<p id="latest-tweet">...</p>		
+		<h3 style="">What is the meaning of this?</h3>
+		<p id="health-msg">...</p>		
 		</div>
 	</div>
-	<div style="margin-top:20%;" align="center">
-		<p>Your score indicates unhealthy habits! Hit the gym buddy!</p>
+	
+	<div id="tweet-button" style="margin-top:20%;" align="center">
+	<p id="latest-tweet"></p>
     <a style="margin-top:20px;" class="btn btn-primary btn-large">
 		Tweet your TweetHealth rating!
     </a>
