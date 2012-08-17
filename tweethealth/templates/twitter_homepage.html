@@ -7,6 +7,7 @@
 	        $.ajax({
 		        type: "POST",
 		        url: '/twitter/update-timeline/',
+				data: { 'csrfmiddlewaretoken': '{{csrf_token}}'},
 		        success:  function(data) {
 					if(data['twitter_error']) {
 						$('#tweet-score').hide();
