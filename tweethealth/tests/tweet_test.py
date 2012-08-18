@@ -14,7 +14,7 @@ from django.test.client import RequestFactory
 
 from tweethealth import views
 
-class TweetTests(TestCase):
+class TweetTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
 
