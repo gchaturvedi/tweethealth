@@ -52,6 +52,7 @@ function postTweet(csrf_token) {
 			else {
 				$('.latest-tweet-label').text('Tweet posted!');
 				$('.latest-tweet').text(data['latest_tweet']);
+				$('.btn-large').hide();
 			}
         },
         error: function(data) {
