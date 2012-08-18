@@ -48,7 +48,6 @@ def update_health_rating(request):
     sent from the user's browser.  This will be triggered periodically.
     """
     context = { }
-    
     try:
         health_rating, latest_tweet = _get_twitter_data(request)
         
@@ -102,8 +101,12 @@ def post_tweet(request):
             request.session['twitter_info']['oauth_token_secret'],
             settings.TWITTER_KEY,settings.TWITTER_SECRET)
         )
+        
         tweet_msg = 'My TweetHealth score is ' + str(request.session['health_rating'])
         t.statuses.update(status=tweet_msg)
+        
+        json_return_val = { 'latest_tweet' : tweet_msg,
+                            'tweet_error' : 0 }
         
     # KeyError here indicates health rating was not saved properly into the session
     except KeyError:
@@ -112,9 +115,6 @@ def post_tweet(request):
     except twit.TwitterHTTPError as e:
         json_return_val = { 'tweet_error': 1,
                             'latest_tweet': 'Error posting tweet' }
-        
-    json_return_val = { 'latest_tweet' : tweet_msg,
-                        'tweet_error' : 0 }
 
     return HttpResponse(json.dumps(json_return_val), mimetype="application/json")
 

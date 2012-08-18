@@ -1,5 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.conf import settings
+from django.core.handlers.base import BaseHandler  
+from django.test.client import RequestFactory  
 
 from twython import Twython
 
@@ -29,17 +31,23 @@ def authorized(request, redirect_url=settings.AUTHORIZE_COMPLETE_URL):
     """
     This function is a callback from Twitter which is triggered after
     the user signs in and allows authorization of their Twitter account.
-    """        
-    twitter = Twython(
-        twitter_token = settings.TWITTER_KEY,
-        twitter_secret = settings.TWITTER_SECRET,
-        oauth_token = request.session['request_token']['oauth_token'],
-        oauth_token_secret = request.session['request_token']['oauth_token_secret'],
-    )
+    """
+    try:
+        twitter = Twython(
+            twitter_token = settings.TWITTER_KEY,
+            twitter_secret = settings.TWITTER_SECRET,
+            oauth_token = request.session['request_token']['oauth_token'],
+            oauth_token_secret = request.session['request_token']['oauth_token_secret'],
+        )
     
-    # Get the access token to complete the three legged oauth handshake
-    twitter_info = twitter.get_authorized_tokens()
+        # Get the access token to complete the three legged oauth handshake
+        twitter_info = twitter.get_authorized_tokens()
     
+    # Something unusual happened from the redirect back from twitter and
+    # nothing was stored in the session, redirect back to homepage.
+    except KeyError:
+        return HttpResponseRedirect(redirect_url)
+        
     # only store twitter info in the session if its valid otherwise the user
     # hit cancel and didn't actually sign in
     if 'oauth_token_secret' in twitter_info and 'user_id' in twitter_info:
