@@ -1,8 +1,7 @@
 TweetHealth
 ===========
-TweetHealth is a small Django web app made for fun and as a learning exercise.  It interacts
-with Twitter via oAuth and the REST API.  The main purpose of the app is to determine your
-health (lifestyle) via your tweets.
+TweetHealth is a small Django web app made for fun and as a learning exercise.  The main 
+purpose of the app is to determine your health (lifestyle) via your tweets from Twitter.
 
 ## Heroku Deployment
 The app has been deployed to heroku, visit it at http://tweethealth.heroku.com
