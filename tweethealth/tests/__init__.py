@@ -1,4 +1,5 @@
-from health_rating_test import HealthRatingTest
+from health_rating_test import UpdateHealthRatingTest
+from health_calculate_test import HealthCalculateTest
 from oauth_twitter_test import OAuthTwitterTest
 from tweet_test import TweetTest
 from basic_functional_test import BasicFunctionalTest

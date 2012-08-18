@@ -6,7 +6,6 @@ python manage.py test
 
 """
 import json
-import mock
 
 from django.test import TestCase
 from django.test.client import Client
