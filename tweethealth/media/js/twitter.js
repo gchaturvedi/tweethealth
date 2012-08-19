@@ -4,11 +4,10 @@
   */
   
 /* this function is called periodically to update the user's TweetHealth score */
-function twitterUpdate(csrf_token) { 
+function twitterUpdate() { 
     $.ajax({
         type: "POST",
         url: '/twitter/update-timeline/',
-		data: { 'csrfmiddlewaretoken': csrf_token },
         success:  function(data) {
 			if(data['twitter_error']) {
 				$('.tweet-score-container').hide();
@@ -38,11 +37,10 @@ function twitterUpdate(csrf_token) {
 }		
 
 /* This function is called to tweet the TweetHealth rating and its triggered by the user */
-function postTweet(csrf_token) { 
+function postTweet() { 
     $.ajax({
         type: "POST",
         url: '/twitter/post-tweet/',
-		data: { 'csrfmiddlewaretoken': csrf_token },
         success:  function(data) {
 			$('.latest-tweet').text(data['latest_tweet']);
 			

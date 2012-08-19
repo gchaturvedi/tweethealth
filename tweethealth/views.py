@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
 from django.template import RequestContext
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 from twython import Twython, TwythonError
 import twitter as twit
@@ -43,16 +44,17 @@ def about(request):
             'about.html',
             context_instance=RequestContext(request))
 
-
+@csrf_exempt
 def update_health_rating(request):
     """
     This function is a callback from a POST request
-    sent from the user's browser.  This will be triggered periodically.
+    sent from the user's browser.  This will be triggered periodically. The
+    Django csrf protection is disabled here since there is no form input.
     """
-    context = { }
+    context = {}
     try:
         health_rating, latest_tweet = _get_twitter_data(request)
-
+        
         # save new health rating into the user's session for later use
         request.session['health_rating'] = health_rating
 
@@ -91,12 +93,13 @@ def update_health_rating(request):
 
     return HttpResponse(json.dumps(json_return_val), mimetype="application/json")
 
-
+@csrf_exempt
 def post_tweet(request):
     """
     This function posts a tweet of your TweetHealth to Twitter.  This function
     uses a different Twitter library called twitter since Twython only seems
-    to be working with GET requests.
+    to be working with GET requests.  The csrf protection is disabled here
+    since there is no form input.
     """
     try:
         t = twit.Twitter(

@@ -3,7 +3,8 @@
 {{ block.super }}
 <script type="text/javascript">
 	$(document).ready(function() {
-		window.setInterval(twitterUpdate('{{csrf_token}}'), 60000);
+		twitterUpdate()
+		window.setInterval(function(){twitterUpdate()}, 60000);
 	});
 </script>
 {% endblock %}
