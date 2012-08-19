@@ -30,4 +30,3 @@ class OAuthTwitterTest(TestCase):
         """
         response = self.client.get('/login-confirm/')
         self.assertEqual(response.status_code, 302)        
-

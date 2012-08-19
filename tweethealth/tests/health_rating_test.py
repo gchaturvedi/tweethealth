@@ -110,6 +110,7 @@ class UpdateHealthRatingTest(TestCase):
     def test_twitter_401_error(self):
         """
         Tests that proper variables are set for output in case of 401 error
+        which is an authentication Twitter related error
         """
         response = self.client.post('/twitter/update-timeline/')
         json_vals = json.loads(response.content)
@@ -120,6 +121,7 @@ class UpdateHealthRatingTest(TestCase):
     def test_twitter_403_error(self):
         """
         Tests that proper variables are set for output in case of 403 error
+        which is a rate limit Twitter related error
         """
         response = self.client.post('/twitter/update-timeline/')
         json_vals = json.loads(response.content)
@@ -128,6 +130,10 @@ class UpdateHealthRatingTest(TestCase):
 
     @mock.patch("tweethealth.views._get_twitter_data", fake_twython_other_error)
     def test_twitter_other_error(self):
+        """
+        Tests that proper variables are set for output in case of a
+        Twitter related error that is not 401 or 403
+        """
         response = self.client.post('/twitter/update-timeline/')
         json_vals = json.loads(response.content)
         self.assertEqual(json_vals['twitter_error'], 1)
