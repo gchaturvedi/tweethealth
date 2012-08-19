@@ -1,9 +1,6 @@
 """
-This file contains all the tests for the TweetHealth app.  The tests
-can be run with the test runner by using this command:
-
-python manage.py test
-
+This file contains tests entirely related to the oAuth related
+handshaking with Twitter.
 """
 import json
 import mock
@@ -32,5 +29,4 @@ class OAuthTwitterTest(TestCase):
         """
         response = self.client.get('/login-confirm/')
         self.assertEqual(response.status_code, 302)        
-                
 

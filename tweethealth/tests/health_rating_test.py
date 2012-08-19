@@ -1,9 +1,7 @@
 """
-This file contains all the tests for the TweetHealth app.  The tests
-can be run with the test runner by using this command:
-
-python manage.py test
-
+This file contains tests for the update_health_rating view function.
+It uses the mock library to mock out some of the messaging that happens
+with Twitter, instead of interacting it Twitter it uses mock or fake data.
 """
 import json
 import mock
@@ -22,29 +20,22 @@ class UpdateHealthRatingTest(TestCase):
         self.client = Client()
         
     def fake_twitter_zero_health(request):
-        return 0, 'This dudes got no health'
+        return 0, 'Fake tweet msg'
 
     def fake_twitter_twenty_five_health(request):
-        return 25, 'They will get by'
+        return 25, 'Fake tweet msg'
 
     def fake_twitter_seventy_five_health(request):
-        return 75, 'Hooba hooba fake twitter test'
+        return 75, 'Fake tweet msg'
 
     def fake_twitter_hundred_health(request):
-        return 100, 'Yeah he is healthy'
-
-    @mock.patch("tweethealth.views._get_twitter_data", fake_twitter_seventy_five_health)
-    def test_twitter_health_rating(self):
-        request = self.factory.get('/twitter/update-timeline/')
-        request.session = { }
-        response = views.update_health_rating(request)
+        return 100, 'Fake tweet msg'
         
     @mock.patch("tweethealth.views._get_twitter_data", fake_twitter_zero_health)
     def test_twitter_zero_five_context(self):
         response = self.client.post('/twitter/update-timeline/')
         self.assertEqual(response.get('Content-Type'), 'application/json')
         self.assertEqual(response.context['health_rating'], 0)
-        self.assertEqual(response.context['latest_tweet'], 'This dudes got no health')
         self.assertEqual(response.context['health_msg'], 'Do you like not use Twitter? Not cool.')
     
     @mock.patch("tweethealth.views._get_twitter_data", fake_twitter_twenty_five_health)
@@ -52,7 +43,6 @@ class UpdateHealthRatingTest(TestCase):
         response = self.client.post('/twitter/update-timeline/')
         self.assertEqual(response.get('Content-Type'), 'application/json')
         self.assertEqual(response.context['health_rating'], 25)
-        self.assertEqual(response.context['latest_tweet'], 'They will get by')
         self.assertEqual(response.context['health_msg'], 'Meh...you could do better..hit the gym buddy.')
     
     @mock.patch("tweethealth.views._get_twitter_data", fake_twitter_seventy_five_health)
@@ -60,7 +50,6 @@ class UpdateHealthRatingTest(TestCase):
         response = self.client.post('/twitter/update-timeline/')
         self.assertEqual(response.get('Content-Type'), 'application/json')
         self.assertEqual(response.context['health_rating'], 75)
-        self.assertEqual(response.context['latest_tweet'], 'Hooba hooba fake twitter test')
         self.assertEqual(response.context['health_msg'], 'You\'re okay, but not super healthy.')
 
     @mock.patch("tweethealth.views._get_twitter_data", fake_twitter_hundred_health)
@@ -68,7 +57,6 @@ class UpdateHealthRatingTest(TestCase):
         response = self.client.post('/twitter/update-timeline/')
         self.assertEqual(response.get('Content-Type'), 'application/json')
         self.assertEqual(response.context['health_rating'], 100)
-        self.assertEqual(response.context['latest_tweet'], 'Yeah he is healthy')
         self.assertEqual(response.context['health_msg'], 'Good for you...you work out and eat well.')
 
     def fake_twython_401_error(request):

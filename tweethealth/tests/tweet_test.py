@@ -1,9 +1,6 @@
 """
-This file contains all the tests for the TweetHealth app.  The tests
-can be run with the test runner by using this command:
-
-python manage.py test
-
+This file contains tests which ensure the Post Tweet
+functionality error cases work.
 """
 import json
 
