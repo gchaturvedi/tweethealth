@@ -31,3 +31,4 @@ class HealthCalculateTest(TestCase):
         self.assertEqual(views._determine_health_rating(self.test_timeline_fifty_five),55)
         self.assertEqual(views._determine_health_rating(self.test_timeline_hundred),100)
         self.assertEqual(views._determine_health_rating(self.test_timeline_negative),10)
+    
