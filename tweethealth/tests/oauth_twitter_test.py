@@ -2,6 +2,7 @@
 This file contains tests entirely related to the oAuth related
 handshaking with Twitter.
 """
+
 import json
 import mock
 

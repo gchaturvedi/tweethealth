@@ -2,6 +2,7 @@
 This file contains tests which ensure the Post Tweet
 functionality error cases work.
 """
+
 import json
 
 from django.test import TestCase
@@ -15,6 +16,10 @@ class TweetTest(TestCase):
         self.factory = RequestFactory()
 
     def test_post_tweet_empty(self):
+        """
+        Test to ensure that a simple redirect happens back to the
+        homepage when no keys are set and a KeyError should happen.
+        """
         request = self.factory.get('/twitter/post-tweet/')
        
         # Test no keys being set
@@ -23,6 +28,10 @@ class TweetTest(TestCase):
         self.assertEqual(response.get('Location'),'/')
 
     def test_post_tweet_http_error(self):
+        """
+        Tests that proper response get generated if an error happens
+        while posting the tweet.
+        """
         request = self.factory.get('/twitter/post-tweet/')
         
         # Fill in mock session data to get function to attempt talking to Twitter's API

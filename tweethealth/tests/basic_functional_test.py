@@ -1,7 +1,6 @@
 """
 These are basic functional unit tests site-wide.  They
 test things such as 404s being displayed, general homepage checks.
-
 """
 from django.test import TestCase
 from django.test.client import Client

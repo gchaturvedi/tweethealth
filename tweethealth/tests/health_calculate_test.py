@@ -1,9 +1,7 @@
 """
-This file contains all the tests for the TweetHealth app.  The tests
-can be run with the test runner by using this command:
-
-python manage.py test
-
+This file contains tests that ensure that the health rating is
+calculated properly on Twitter (mock) data.  It also ensures that
+the function that gets Twitter data is behaving properly.
 """
 import json
 import mock
@@ -18,4 +16,3 @@ class HealthCalculateTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.client = Client()
-        
