@@ -152,7 +152,7 @@ def _get_twitter_data(request):
     # KeyError(s) here indicate the user clicking cancel instead of signing in
     except KeyError:
         return HttpResponseRedirect(settings.AUTHORIZE_COMPLETE_URL)
-    
+
     user_timeline = twitter.getUserTimeline()
 
     if user_timeline:
@@ -175,14 +175,23 @@ def _determine_health_rating(user_timeline=None):
     # start at a 75 (an average ealth score)
     health_meter = 75
     
+    # initialize healthy and unhealthy points to zero
+    healthy_points = 0
+    unhealthy_points = 0
+    
     if not user_timeline:
         # set to zero, this person does not really use twitter cannot give average score of 75
         health_meter = 0
     else:
-        # list comprehensions to determine healthy and unhealthy points
-        healthy_points = len([(tweet,word) for tweet in user_timeline for word in HEALTHY_WORDS if word in tweet['text']])
-        unhealthy_points = len([(tweet,word) for tweet in user_timeline for word in UNHEALTHY_WORDS if word in tweet['text']])
-    
+        # Determine healthy and unhealthy points to use in score calculation
+        for tweet in user_timeline:
+            for word in HEALTHY_WORDS:
+                if word in tweet['text']:
+                    healthy_points = healthy_points + 1
+            for word in UNHEALTHY_WORDS:
+                if word in tweet['text']:
+                    unhealthy_points = unhealthy_points + 1
+        
         # Alter score based on points calculated
         health_meter += healthy_points*10
         health_meter -= unhealthy_points*10
