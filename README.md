@@ -15,3 +15,6 @@ The app has been deployed to heroku, visit it at http://tweethealth.heroku.com
 
 ## Authors
 - Gaurav Chaturvedi (gchaturvedi303@gmail.com)
+
+## License
+- Released under MIT License
