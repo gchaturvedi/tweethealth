@@ -24,6 +24,7 @@ def homepage(request):
     # set the default context dictionary and template to be displayed
     context = {}
     template = 'homepage.html'
+    import ipdb; ipdb.set_trace()
 
     # check if website visitor has already given access to their twitter account
     if 'twitter_info' in request.session:

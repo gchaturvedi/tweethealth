@@ -41,8 +41,8 @@ def authorized(request, redirect_url=settings.AUTHORIZE_COMPLETE_URL):
         )
     
         # Get the access token to complete the three legged oauth handshake
-        twitter_info = twitter.get_authorized_tokens()
-    
+        twitter_info = twitter.get_authorized_tokens(request.GET['oauth_verifier'])
+        import ipdb; ipdb.set_trace()    
     # Something unusual happened from the redirect back from twitter and
     # nothing was stored in the session, redirect back to homepage.
     except KeyError:
