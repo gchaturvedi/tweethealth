@@ -54,7 +54,7 @@ def update_health_rating(request):
     context = {}
     try:
         health_rating, latest_tweet = _get_twitter_data(request)
-        
+
         # save new health rating into the user's session for later use
         request.session['health_rating'] = health_rating
 
@@ -78,8 +78,8 @@ def update_health_rating(request):
                                   context_instance=RequestContext(request))
 
         json_return_val = { 'html_string' : html_string,
-                            'twitter_error': 0 }     
-                
+                            'twitter_error': 0 }
+
     # catch various Twitter API errors, (401 is auth error, 403 is rate limit error)
     except TwythonError as e:
         if e.error_code == 401:
@@ -102,14 +102,16 @@ def post_tweet(request):
     since there is no form input.
     """
     try:
-        t = twit.Twitter(
-            auth=twit.OAuth(request.session['twitter_info']['oauth_token'],
+        twitter = Twython(
+            settings.TWITTER_KEY,
+            settings.TWITTER_SECRET,
+            request.session['twitter_info']['oauth_token'],
             request.session['twitter_info']['oauth_token_secret'],
-            settings.TWITTER_KEY, settings.TWITTER_SECRET)
         )
 
         tweet_msg = 'My TweetHealth score is ' + str(request.session['health_rating'])
-        t.statuses.update(status=tweet_msg)
+
+        twitter.update_status(status=tweet_msg)
 
         json_return_val = { 'latest_tweet': tweet_msg,
                             'tweet_error' : 0 }
@@ -152,17 +154,17 @@ def _get_twitter_data(request):
     """
     try:
         twitter = Twython(
-            twitter_token=settings.TWITTER_KEY,
-            twitter_secret=settings.TWITTER_SECRET,
-            oauth_token=request.session['twitter_info']['oauth_token'],
-            oauth_token_secret=request.session['twitter_info']['oauth_token_secret'],
+            settings.TWITTER_KEY,
+            settings.TWITTER_SECRET,
+            request.session['twitter_info']['oauth_token'],
+            request.session['twitter_info']['oauth_token_secret'],
         )
 
     # KeyError(s) here indicate the user clicking cancel instead of signing in
     except KeyError:
         return HttpResponseRedirect(settings.AUTHORIZE_COMPLETE_URL)
 
-    user_timeline = twitter.getUserTimeline()
+    user_timeline = twitter.get_user_timeline()
 
     if user_timeline:
         latest_tweet = user_timeline[0]['text']
