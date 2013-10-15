@@ -120,9 +120,13 @@ def post_tweet(request):
     except KeyError:
         return HttpResponseRedirect(settings.AUTHORIZE_COMPLETE_URL)
     # TwitterHTTPError indicates an error interacting with Twitter's API
-    except twit.TwitterHTTPError as e:
-        json_return_val = { 'tweet_error' : 1,
-                            'latest_tweet': 'Error posting tweet'}
+    except TwythonError as e:
+        if e.error_code == 403:
+            json_return_val = { 'twitter_error': 1,
+                                'duplicate_error'   : 1 }
+        else:
+            json_return_val = { 'twitter_error': 1 }
+
 
     return HttpResponse(json.dumps(json_return_val),
                         mimetype="application/json")

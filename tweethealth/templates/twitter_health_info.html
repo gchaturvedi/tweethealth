@@ -8,7 +8,7 @@
 		</div>
 	<div class="meaning-block">
 	<h3>What is the meaning of this?</h3>
-	<p class="health-msg">{{health_msg}}</p>		
+	<p class="health-msg">{{health_msg}}</p>
 	</div>
 </div>
 <div class="tweet-button-container" align="center">
@@ -16,6 +16,7 @@
 <p class="latest-tweet">{% if latest_tweet %}{{latest_tweet}}{%else %}You have no tweets!{% endif %}</p>
 </div>
 <div>
+<p style="display:none" class="post-error">Error!</p>
 <a href="javascript:void(0);" onclick="postTweet();" class="btn btn-primary btn-large">
 	Tweet your TweetHealth rating!
 </a>

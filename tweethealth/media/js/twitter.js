@@ -2,9 +2,9 @@
   * This file holds the functions which interact with TweetHealth's server
   * which triggers view functions related to Twitter
   */
-  
+
 /* this function is called periodically to update the user's TweetHealth score */
-function twitterUpdate() { 
+function twitterUpdate() {
     $.ajax({
         type: "POST",
         url: '/twitter/update-timeline/',
@@ -14,7 +14,7 @@ function twitterUpdate() {
 				$('.latest-tweet').hide();
 				$('.waiting-block').hide();
 				$('.tweet-button-container').hide();
-				
+
 				if(data['rate_error']) {
 					$('.twitter-block').text('You have hit the Twitter API rate limit.');
 				}
@@ -32,20 +32,27 @@ function twitterUpdate() {
         },
         error: function(data) {
 			// Insert error processing here if necessary
-        }	
-	});		
-}		
+        }
+	});
+}
 
 /* This function is called to tweet the TweetHealth rating and its triggered by the user */
-function postTweet() { 
+function postTweet() {
     $.ajax({
         type: "POST",
         url: '/twitter/post-tweet/',
         success:  function(data) {
 			$('.latest-tweet').text(data['latest_tweet']);
-			
+
 			if(data['twitter_error']) {
 				$('.latest-tweet-label').hide();
+        $('.post-error').show();
+        $('.btn-large').hide();
+        if(data['duplicate_error']) {
+          $('.post-error').text('You just tweeted this already!')
+        } else {
+          $('.post-error').text('Somethin or another went wrong!')
+        }
 			}
 			else {
 				$('.latest-tweet-label').text('Tweet posted!');
@@ -55,6 +62,6 @@ function postTweet() {
         },
         error: function(data) {
 			// Insert error processing here if necessary
-        }	
-	});		
+        }
+	});
 }
