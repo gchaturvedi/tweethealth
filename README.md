@@ -10,6 +10,11 @@ purpose of the app is to determine your health (lifestyle) via your tweets from 
 - jQuery 1.8.0 / Javascript (These are under /media/ which is standard practice in Django apps)
 - Twitter Bootstrap (HTML/CSS library also under /media/)
 
+## Heroku Deployment		
+The app has been deployed to heroku, visit it at http://tweethealth.herokuapp.com/
+
+It's on a free dyno, so it could take up to 30 seconds to load up.
+
 ## Authors
 - Gaurav Chaturvedi (gchaturvedi303@gmail.com)
 
